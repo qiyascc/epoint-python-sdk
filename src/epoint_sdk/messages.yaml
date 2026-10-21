@@ -1,0 +1,39 @@
+settings:
+  description: Settings for the Epoint client. Values come from code, EPOINT_* environment variables or a config file.
+  public_key: Merchant public key, for example i000000001
+  private_key: Merchant private key used to sign requests and verify callbacks
+  base_url: Gateway address
+  endpoints: Path of every API call, relative to base_url
+  language: Default language of the hosted payment page (az, en, ru)
+  currency: Default currency
+  success_url: Default page the customer returns to after a successful payment
+  error_url: Default page the customer returns to after a failed payment
+  timeout: Seconds to wait for an answer
+  connect_timeout: Seconds to wait for a connection
+  max_retries: Extra attempts for calls that are safe to repeat
+  backoff_base: First wait between retries, in seconds
+  backoff_cap: Longest wait between retries, in seconds
+  user_agent: User-Agent header
+
+value:
+  amount_type: "{field} must be a number, got {value!r}"
+  amount_positive: "{field} must be greater than zero, got {value}"
+  amount_scale: "{field} {value} has more than two decimal places"
+  amount_finite: "{field} must be a finite number, got {value}"
+  empty: "{field} cannot be empty"
+  too_long: "{field} is longer than {limit} characters"
+  months: "months must be a positive whole number, got {value!r}"
+  split_amount: "split_amount {split} cannot exceed amount {amount}"
+
+error:
+  missing_keys: Epoint public_key and private_key are required
+  signature: The signature does not match the data
+  data: The data field is not base64 encoded JSON
+  data_object: The data field does not decode to a JSON object
+  callback_fields: A callback needs both data and signature
+  connect: "Could not reach Epoint, nothing was sent: {error}"
+  timeout: "Epoint did not answer in time: {error}"
+  unknown_outcome: "The request reached Epoint but no answer came back ({reason}). Check the order before trying again."
+  status: "Epoint answered HTTP {status}"
+  body: "Epoint sent a body that is not JSON: {body}"
+  refused: Epoint refused the request

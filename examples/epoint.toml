@@ -1,0 +1,6 @@
+public_key = "i000000001"
+private_key = "your-private-key"
+success_url = "https://shop.az/payment/ok"
+error_url = "https://shop.az/payment/fail"
+language = "az"
+timeout = 30

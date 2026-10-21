@@ -179,19 +179,21 @@ class Cards(_Resource):
         return self._run(Op("card_status", payload, Card.from_api, safe=True))
 
 
+def split_parts(total: Amount, partner: str, partner_amount: Amount) -> dict[str, Any]:
+    whole, part = amount(total), amount(partner_amount, "split_amount")
+    if part > whole:
+        raise InvalidRequestError(text("value.split_amount", split=part, amount=whole))
+    return {"split_user": required(partner, "split_user"), "split_amount": wire(part)}
+
+
 class Split(_Resource):
-    def _parts(self, total: Amount, partner: str, partner_amount: Amount) -> dict[str, Any]:
-        whole, part = amount(total), amount(partner_amount, "split_amount")
-        if part > whole:
-            raise InvalidRequestError(text("value.split_amount", split=part, amount=whole))
-        return {"split_user": required(partner, "split_user"), "split_amount": wire(part)}
 
     def create(self, amount: Amount, order_id: str, partner: str, partner_amount: Amount, *,
                description: Optional[str] = None, language: Optional[LanguageLike] = None,
                currency: Optional[CurrencyLike] = None, success_url: Optional[str] = None,
                error_url: Optional[str] = None, other_attr: Any = None) -> Any:
         payload = self._checkout(amount, order_id, description, language, currency, success_url, error_url, other_attr)
-        payload.update(self._parts(amount, partner, partner_amount))
+        payload.update(split_parts(amount, partner, partner_amount))
         return self._run(Op("split_payment", payload, Redirect.from_api, order_id=str(payload["order_id"])))
 
     def charge(self, card_id: str, amount_: Amount, order_id: str, partner: str, partner_amount: Amount, *,
@@ -204,7 +206,7 @@ class Split(_Resource):
             "currency": self._currency(currency),
             "language": self._language(language),
             "description": optional(description, "description"),
-            **self._parts(amount_, partner, partner_amount),
+            **split_parts(amount_, partner, partner_amount),
         }
         return self._run(Op("split_charge", payload, Transaction.from_api, payment_state=True,
                             order_id=str(payload["order_id"])))
@@ -214,7 +216,7 @@ class Split(_Resource):
                          currency: Optional[CurrencyLike] = None, success_url: Optional[str] = None,
                          error_url: Optional[str] = None) -> Any:
         payload = self._checkout(amount, order_id, description, language, currency, success_url, error_url)
-        payload.update(self._parts(amount, partner, partner_amount))
+        payload.update(split_parts(amount, partner, partner_amount))
         return self._run(Op("split_register_pay", payload, CardRegistration.from_api,
                             order_id=str(payload["order_id"])))
 
@@ -276,6 +278,14 @@ class Widgets(_Resource):
         payload = {"amount": wire(amount(amount_)), "order_id": required(order_id, "order_id"),
                    "description": required(description, "description")}
         return self._run(Op("widget", payload, Widget.from_api, order_id=str(payload["order_id"])))
+
+    def split(self, amount: Amount, order_id: str, partner: str, partner_amount: Amount, *,
+              description: Optional[str] = None, language: Optional[LanguageLike] = None,
+              currency: Optional[CurrencyLike] = None, success_url: Optional[str] = None,
+              error_url: Optional[str] = None) -> Any:
+        payload = self._checkout(amount, order_id, description, language, currency, success_url, error_url)
+        payload.update(split_parts(amount, partner, partner_amount))
+        return self._run(Op("widget_split", payload, Redirect.from_api, order_id=str(payload["order_id"])))
 
 
 def _invoice_body(total: Amount, period_from: Union[date, str], period_to: Union[date, str], name: Optional[str],

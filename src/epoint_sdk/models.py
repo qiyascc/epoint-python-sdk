@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from decimal import Decimal
 from typing import Any, Mapping, Optional
+from urllib.parse import urlsplit
 
 from .enums import CardStatus, Status
 from .money import parse
@@ -91,6 +92,15 @@ class Transaction:
     def final(self) -> bool:
         return not self.pending
 
+    def matches(self, *, order_id: Optional[str] = None, amount: Any = None, transaction: Optional[str] = None) -> bool:
+        if order_id is not None and self.order_id != str(order_id):
+            return False
+        if transaction is not None and self.transaction is not None and self.transaction != str(transaction):
+            return False
+        if amount is not None and self.amount != parse(amount):
+            return False
+        return True
+
 
 Callback = Transaction
 
@@ -159,6 +169,42 @@ class Widget:
     @classmethod
     def from_api(cls, body: Mapping[str, Any]) -> Widget:
         return cls(_str(body, "widget_url"), _str(body, "transaction"), _str(body, "trace_id"), dict(body))
+
+    @property
+    def origin(self) -> Optional[str]:
+        return origin_of(self.widget_url)
+
+
+def origin_of(url: Optional[str]) -> Optional[str]:
+    if not url:
+        return None
+    parts = urlsplit(url)
+    if not parts.scheme or not parts.netloc:
+        return None
+    return f"{parts.scheme}://{parts.netloc}".lower()
+
+
+@dataclass(frozen=True)
+class WidgetMessage:
+    status: Status
+    order_id: Optional[str] = None
+    transaction: Optional[str] = None
+    amount: Optional[Decimal] = None
+    card_mask: Optional[str] = None
+    message: Optional[str] = None
+    raw: Mapping[str, Any] = field(default_factory=dict, repr=False, compare=False)
+
+    @classmethod
+    def from_event(cls, data: Mapping[str, Any]) -> WidgetMessage:
+        found = data.get("payment")
+        payment: Mapping[str, Any] = found if isinstance(found, Mapping) else {}
+        status = payment.get("status") or data.get("status")
+        return cls(Status.of(status), _str(payment, "order_id"), _str(payment, "transaction"),
+                   parse(payment.get("amount")), _str(payment, "card_mask"), _str(payment, "message"), dict(data))
+
+    @property
+    def looks_paid(self) -> bool:
+        return self.status is Status.SUCCESS
 
 
 @dataclass(frozen=True)

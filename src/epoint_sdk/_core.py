@@ -64,6 +64,7 @@ class Engine:
             current["private_key"] = settings.private_key.get_secret_value()
             settings = load_settings(None, **{**current, **changes})
         self.settings = settings
+        settings.check_transport()
         self.public_key, self._private_key = settings.keys()
 
     def __repr__(self) -> str:

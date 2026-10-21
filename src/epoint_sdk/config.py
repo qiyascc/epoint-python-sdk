@@ -1,15 +1,17 @@
 from __future__ import annotations
 
 from typing import Any, Optional
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit
 
 from goodconf import Field, GoodConf, GoodConfConfigDict
-from pydantic import BaseModel, SecretStr
+from pydantic import BaseModel, SecretStr, field_validator
 
 from ._version import __version__
 from .enums import Currency, Language
 from .errors import ConfigurationError
 from .messages import text
+
+LOCAL_HOSTS = frozenset({"localhost", "127.0.0.1", "::1"})
 
 
 class Endpoints(BaseModel):
@@ -32,6 +34,7 @@ class Endpoints(BaseModel):
     wallets: str = "/api/1/wallet/status"
     wallet_payment: str = "/api/1/wallet/payment"
     widget: str = "/api/1/token/widget"
+    widget_split: str = "/api/1/token/split-payment"
     invoice_create: str = "/api/1/invoices/create"
     invoice_update: str = "/api/1/invoices/update"
     invoice_view: str = "/api/1/invoices/view"
@@ -66,6 +69,21 @@ class Settings(GoodConf):
     backoff_base: float = Field(default=0.5, ge=0, description=text("settings.backoff_base"))
     backoff_cap: float = Field(default=8.0, ge=0, description=text("settings.backoff_cap"))
     user_agent: str = Field(default="epoint-python-sdk/{version}", description=text("settings.user_agent"))
+    allow_insecure_http: bool = Field(default=False, description=text("settings.allow_insecure_http"))
+
+    @field_validator("base_url")
+    @classmethod
+    def _base_url(cls, value: str) -> str:
+        parts = urlsplit(value.strip())
+        if parts.scheme not in ("http", "https") or not parts.hostname:
+            raise ValueError(text("error.base_url", url=value))
+        return value.strip()
+
+    def check_transport(self) -> None:
+        parts = urlsplit(self.base_url)
+        if parts.scheme == "https" or self.allow_insecure_http or parts.hostname in LOCAL_HOSTS:
+            return
+        raise ConfigurationError(text("error.insecure", url=self.base_url))
 
     def url(self, endpoint: str, **params: Any) -> str:
         template = endpoint if endpoint.startswith("/") else getattr(self.endpoints, endpoint)

@@ -5,6 +5,8 @@
 [![Typed](https://img.shields.io/badge/typing-mypy-2A6DB2)](https://mypy-lang.org)
 [![Async](https://img.shields.io/badge/sync%20%2B%20async-httpx-5A45FF)](https://www.python-httpx.org)
 [![Ruff](https://img.shields.io/badge/lint-ruff-D7FF64?logo=ruff&logoColor=black)](https://docs.astral.sh/ruff)
+[![Apple Pay](https://img.shields.io/badge/Apple%20Pay-supported-000000?logo=applepay&logoColor=white)](#apple-pay-and-google-pay)
+[![Google Pay](https://img.shields.io/badge/Google%20Pay-supported-4285F4?logo=googlepay&logoColor=white)](#apple-pay-and-google-pay)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 Typed Python client for the [Epoint](https://epoint.az) payment gateway. Sync and async, every endpoint, signed callbacks, and retry rules built so a payment is never sent twice.
@@ -37,6 +39,24 @@ Never trust the redirect alone. Use the signed callback, or ask the gateway:
 ep.payments.status(checkout.transaction).paid
 ```
 
+## Apple Pay and Google Pay
+
+```python
+widget = ep.widgets.create("19.90", "ORDER-1043", "Pro plan")
+```
+
+```html
+<iframe src="{{ widget.widget_url }}" allow="payment" title="Apple Pay / Google Pay"></iframe>
+<script>
+addEventListener("message", (e) => {
+  if (e.origin !== "{{ widget.origin }}") return;
+  fetch("/orders/1043/check/", { method: "POST" });
+});
+</script>
+```
+
+The page needs `Permissions-Policy: payment=(self "https://epoint.az")`. The `postMessage` is a hint only: `WidgetMessage.from_event(data)` reads it, then confirm on the server with `ep.payments.status(widget.transaction)` or the signed callback. Epoint enables token payments per merchant. `ep.widgets.split(...)` is the split variant.
+
 ## Safety
 
 | Situation | What the client does |
@@ -48,6 +68,9 @@ ep.payments.status(checkout.transaction).paid
 | `status: error` from the gateway | `GatewayError` with `code` and `trace_id` |
 | Declined card on a direct charge | Returns `Transaction` with `failed`, never raises |
 | Amount like `1.005`, `0`, `NaN` or `True` | `InvalidRequestError` before anything is sent |
+| `base_url` over plain http | `ConfigurationError`, except localhost or `allow_insecure_http` |
+| Callback `data` over 64 KB | Rejected before hashing |
+| Callback for another order or amount | `tx.matches(order_id=..., amount=...)` is `False` |
 
 Reuse the same `order_id` when you retry. Epoint refuses a used one, so a double click or a crash can not charge twice. Amounts are `Decimal` end to end, and signatures are compared in constant time.
 
@@ -60,7 +83,7 @@ Reuse the same `order_id` when you retry. Epoint refuses a used one, so a double
 | `split` | `create` `charge` `register_and_pay` |
 | `installments` | `plans` `create` |
 | `wallets` | `list` `pay` |
-| `widgets` | `create` (Apple Pay, Google Pay) |
+| `widgets` | `create` `split` (Apple Pay, Google Pay) |
 | `invoices` | `create` `update` `get` `list` `send_sms` `send_email` |
 | `transfers` | `create` `status` (B2B) |
 | client | `heartbeat` `verify_callback` `request` |

@@ -28,6 +28,8 @@ from .models import (
     Transfer,
     Wallet,
     Widget,
+    WidgetMessage,
+    origin_of,
 )
 
 __all__ = [
@@ -57,6 +59,8 @@ __all__ = [
     "Transfer",
     "Wallet",
     "Widget",
+    "WidgetMessage",
+    "origin_of",
     "EpointError",
     "ConfigurationError",
     "InvalidRequestError",

@@ -14,6 +14,7 @@ settings:
   backoff_base: First wait between retries, in seconds
   backoff_cap: Longest wait between retries, in seconds
   user_agent: User-Agent header
+  allow_insecure_http: Allow a plain http base_url outside localhost, for a sandbox on a private network only
 
 value:
   amount_type: "{field} must be a number, got {value!r}"
@@ -27,6 +28,9 @@ value:
 
 error:
   missing_keys: Epoint public_key and private_key are required
+  insecure: "Refusing to send signed requests over plain http to {url}. Use https, or set allow_insecure_http for a sandbox."
+  base_url: "base_url must be an http or https address, got {url}"
+  too_large: "The data field is larger than {limit} bytes"
   signature: The signature does not match the data
   data: The data field is not base64 encoded JSON
   data_object: The data field does not decode to a JSON object

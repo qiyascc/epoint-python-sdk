@@ -22,12 +22,17 @@ def sign(private_key: str, data: str) -> str:
 
 
 def matches(private_key: str, data: str, signature: str) -> bool:
-    if not private_key or not data or not signature:
+    if not private_key or not data or not signature or len(data) > MAX_DATA or len(signature) > 128:
         return False
     return hmac.compare_digest(sign(private_key, data).encode(), str(signature).strip().encode())
 
 
+MAX_DATA = 65536
+
+
 def decode(data: str) -> dict[str, Any]:
+    if len(data) > MAX_DATA:
+        raise SignatureError(text("error.too_large", limit=MAX_DATA))
     try:
         raw = base64.b64decode(data, validate=True)
         parsed = json.loads(raw.decode("utf-8"))

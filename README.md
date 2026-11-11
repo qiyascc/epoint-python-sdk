@@ -7,12 +7,12 @@
 [![Ruff](https://img.shields.io/badge/lint-ruff-D7FF64?logo=ruff&logoColor=black)](https://docs.astral.sh/ruff)
 [![Apple Pay](https://img.shields.io/badge/Apple%20Pay-supported-000000?logo=applepay&logoColor=white)](#apple-pay-and-google-pay)
 [![Google Pay](https://img.shields.io/badge/Google%20Pay-supported-4285F4?logo=googlepay&logoColor=white)](#apple-pay-and-google-pay)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/qiyascc/epoint-python-sdk/blob/main/LICENSE)
 
 Typed Python client for the [Epoint](https://epoint.az) payment gateway. Sync and async, every endpoint, signed callbacks, and retry rules built so a payment is never sent twice.
 
 ```bash
-pip install git+https://github.com/qiyascc/epoint-python-sdk.git
+pip install epoint-python-sdk
 ```
 
 ## Pay
@@ -99,5 +99,14 @@ Pass values in code, or set `EPOINT_PUBLIC_KEY`, `EPOINT_PRIVATE_KEY`, `EPOINT_S
 ```bash
 pip install -e ".[dev]" && pytest && ruff check . && mypy src
 ```
+
+## Links
+
+- Source code: [github.com/qiyascc/epoint-python-sdk](https://github.com/qiyascc/epoint-python-sdk)
+- PyPI: [pypi.org/project/epoint-python-sdk](https://pypi.org/project/epoint-python-sdk/)
+- Project page: [theqiyas.cc/projects/epoint-python-sdk](https://theqiyas.cc/projects/epoint-python-sdk/)
+- Author: [Qiyas Sadıqov](https://theqiyas.cc), more projects at [theqiyas.cc](https://theqiyas.cc)
+
+## License
 
 MIT

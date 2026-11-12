@@ -1,5 +1,6 @@
 # epoint-python-sdk
 
+[![PyPI](https://img.shields.io/pypi/v/epoint-python-sdk?color=3775A9&logo=pypi&logoColor=white)](https://pypi.org/project/epoint-python-sdk/)
 [![Python](https://img.shields.io/badge/python-3.10%20to%203.13-3776AB?logo=python&logoColor=white)](https://www.python.org)
 [![Epoint](https://img.shields.io/badge/gateway-epoint.az-0B5FFF)](https://epoint.az)
 [![Typed](https://img.shields.io/badge/typing-mypy-2A6DB2)](https://mypy-lang.org)

@@ -1,0 +1,278 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: epoint-python-sdk docs\n"
+"Last-Translator: Qiyas Sadıqov <qiyasturk@gmail.com>\n"
+"Language: az\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+msgid ""
+"\n"
+"            <a href=\"https://github.com/pradyunsg/furo\">Furo</a>\n"
+"            "
+msgstr ""
+"\n"
+"            <a href=\"https://github.com/pradyunsg/furo\">Furo</a>\n"
+"            "
+
+msgid "About these documents"
+msgstr "Bu sənədlər haqqında"
+
+msgid "Back to top"
+msgstr "Yuxarı qayıt"
+
+msgid "Builds"
+msgstr "Yığımlar"
+
+msgid "Copyright"
+msgstr "Müəllif hüquqları"
+
+msgid "Copyright &#169; %(copyright)s"
+msgstr "Müəllif hüquqları &#169; %(copyright)s"
+
+msgid "<a href=\"%(path)s\">Copyright</a> &#169; %(copyright)s"
+msgstr "<a href=\"%(path)s\">Müəllif hüquqları</a> &#169; %(copyright)s"
+
+msgid "Downloads"
+msgstr "Yükləmələr"
+
+msgid "Edit this page"
+msgstr "Bu səhifəni redaktə et"
+
+msgid "Error"
+msgstr "Xəta"
+
+msgid "Home"
+msgstr "Ana səhifə"
+
+msgid "Index"
+msgstr "İndeks"
+
+msgid "Last updated on %(last_updated)s"
+msgstr "Son yenilənmə: %(last_updated)s"
+
+msgid "Made with "
+msgstr "Mövzu: "
+
+msgid "Next"
+msgstr "Növbəti"
+
+msgid "On Read the Docs"
+msgstr "Read the Docs-da"
+
+msgid "On this page"
+msgstr "Bu səhifədə"
+
+msgid "Please activate JavaScript to enable the search functionality."
+msgstr "Axtarışdan istifadə etmək üçün JavaScript-i aktiv edin."
+
+msgid "Previous"
+msgstr "Əvvəlki"
+
+msgid "Project Home"
+msgstr "Layihənin ana səhifəsi"
+
+msgid "Search"
+msgstr "Axtarış"
+
+msgid "Skip to content"
+msgstr "Məzmuna keç"
+
+msgid "Versions"
+msgstr "Versiyalar"
+
+msgid "View this page"
+msgstr "Bu səhifəyə bax"
+
+msgid "Made by"
+msgstr "Müəllif"
+
+msgid "Project page"
+msgstr "Layihə səhifəsi"
+
+msgid "Language"
+msgstr "Dil"
+
+msgid "Note"
+msgstr "Qeyd"
+
+msgid "Warning"
+msgstr "Xəbərdarlıq"
+
+msgid "Tip"
+msgstr "Məsləhət"
+
+msgid "Attention"
+msgstr "Diqqət"
+
+msgid "Caution"
+msgstr "Ehtiyatlı olun"
+
+msgid "Danger"
+msgstr "Təhlükə"
+
+msgid "Hint"
+msgstr "İpucu"
+
+msgid "Important"
+msgstr "Vacib"
+
+msgid "See also"
+msgstr "Həmçinin bax"
+
+msgid "Link to this heading"
+msgstr "Bu başlığa keçid"
+
+msgid "Link to this definition"
+msgstr "Bu tərifə keçid"
+
+msgid "Link to this table"
+msgstr "Bu cədvələ keçid"
+
+msgid "Link to this code"
+msgstr "Bu koda keçid"
+
+msgid "Link to this image"
+msgstr "Bu şəklə keçid"
+
+msgid "Link to this term"
+msgstr "Bu terminə keçid"
+
+msgid "Link to this toctree"
+msgstr "Bu mündəricata keçid"
+
+msgid "[source]"
+msgstr "[mənbə]"
+
+msgid "Overview: module code"
+msgstr "İcmal: modulun kodu"
+
+msgid "Module code"
+msgstr "Modulun kodu"
+
+msgid "<h1>All modules for which code is available</h1>"
+msgstr "<h1>Kodu mövcud olan bütün modullar</h1>"
+
+msgid "<h1>Source code for %s</h1>"
+msgstr "<h1>%s üçün mənbə kodu</h1>"
+
+msgid "General Index"
+msgstr "Ümumi indeks"
+
+msgid "Full index on one page"
+msgstr "Bütün indeks bir səhifədə"
+
+msgid "Index pages by letter"
+msgstr "Hərflər üzrə indeks səhifələri"
+
+msgid "Search Results"
+msgstr "Axtarış nəticələri"
+
+msgid "Searching"
+msgstr "Axtarılır"
+
+msgid "Preparing search..."
+msgstr "Axtarış hazırlanır..."
+
+msgid ", in "
+msgstr ", bölmə: "
+
+msgid "Hide Search Matches"
+msgstr "Axtarış nəticələrini gizlət"
+
+msgid "Your search did not match any documents. Please make sure that all words are spelled correctly and that you've selected enough categories."
+msgstr "Axtarışınıza uyğun səhifə tapılmadı. Sözlərin düzgün yazıldığını yoxlayın."
+
+msgid "Search Page"
+msgstr "Axtarış səhifəsi"
+
+msgid "Table of Contents"
+msgstr "Mündəricat"
+
+msgid "Contents"
+msgstr "Mündəricat"
+
+msgid "Python Module Index"
+msgstr "Python modulları indeksi"
+
+msgid "modules"
+msgstr "modullar"
+
+msgid "module"
+msgstr "modul"
+
+msgid "class"
+msgstr "sinif"
+
+msgid "method"
+msgstr "metod"
+
+msgid "function"
+msgstr "funksiya"
+
+msgid "exception"
+msgstr "istisna"
+
+msgid "attribute"
+msgstr "atribut"
+
+msgid "property"
+msgstr "xassə"
+
+msgid "alias of %s"
+msgstr "%s üçün digər ad"
+
+msgid "Bases: %s"
+msgstr "Əsas siniflər: %s"
+
+msgid "Footnotes"
+msgstr "Haşiyələr"
+
+msgid "Example"
+msgstr "Nümunə"
+
+msgid "Examples"
+msgstr "Nümunələr"
+
+msgid "Parameters"
+msgstr "Parametrlər"
+
+msgid "Returns"
+msgstr "Qaytarır"
+
+msgid "Return type"
+msgstr "Qaytarılan tip"
+
+msgid "Raises"
+msgstr "Atır"
+
+msgid "%s() (in module %s)"
+msgstr "%s() (%s modulunda)"
+
+msgid "%s (in module %s)"
+msgstr "%s (%s modulunda)"
+
+msgid "%s (class in %s)"
+msgstr "%s (%s modulunda sinif)"
+
+msgid "%s() (%s method)"
+msgstr "%s() (%s metodu)"
+
+msgid "%s (%s attribute)"
+msgstr "%s (%s atributu)"
+
+msgid "%s (%s property)"
+msgstr "%s (%s xassəsi)"
+
+msgid "%s() (%s class method)"
+msgstr "%s() (%s sinif metodu)"
+
+msgid "%s() (%s static method)"
+msgstr "%s() (%s statik metodu)"
+
+msgid "%s (module)"
+msgstr "%s (modul)"
+

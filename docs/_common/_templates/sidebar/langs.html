@@ -1,0 +1,5 @@
+<div class="qc-langs" role="navigation" aria-label="{{ _('Language') }}">
+  {%- for code, label, base in qc_langs %}
+  <a href="{{ base }}{{ pagename }}.html" hreflang="{{ code }}" lang="{{ code }}"{% if code == language %} class="is-current" aria-current="true"{% endif %}>{{ label }}</a>
+  {%- endfor %}
+</div>

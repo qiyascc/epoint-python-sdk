@@ -12,3 +12,5 @@ venv/
 .ruff_cache/
 .coverage
 htmlcov/
+docs/*/_build/
+docs/_common/locale/*/LC_MESSAGES/*.mo

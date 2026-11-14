@@ -33,6 +33,7 @@ dev = ["epoint-python-sdk[toml,yaml]", "pytest>=7", "pytest-asyncio>=0.21", "ruf
 
 [project.urls]
 Homepage = "https://theqiyas.cc/projects/epoint-python-sdk/"
+Documentation = "https://epoint-python-sdk.readthedocs.io/"
 Source = "https://github.com/qiyascc/epoint-python-sdk"
 Author = "https://theqiyas.cc"
 Issues = "https://github.com/qiyascc/epoint-python-sdk/issues"

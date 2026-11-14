@@ -1,6 +1,7 @@
 # epoint-python-sdk
 
 [![PyPI](https://img.shields.io/pypi/v/epoint-python-sdk?color=3775A9&logo=pypi&logoColor=white)](https://pypi.org/project/epoint-python-sdk/)
+[![Docs](https://readthedocs.org/projects/epoint-python-sdk/badge/?version=latest)](https://epoint-python-sdk.readthedocs.io/az/latest/)
 [![Python](https://img.shields.io/badge/python-3.10%20to%203.13-3776AB?logo=python&logoColor=white)](https://www.python.org)
 [![Epoint](https://img.shields.io/badge/gateway-epoint.az-0B5FFF)](https://epoint.az)
 [![Typed](https://img.shields.io/badge/typing-mypy-2A6DB2)](https://mypy-lang.org)
@@ -103,6 +104,7 @@ pip install -e ".[dev]" && pytest && ruff check . && mypy src
 
 ## Links
 
+- Documentation: [Azerbaijani](https://epoint-python-sdk.readthedocs.io/az/latest/), [English](https://epoint-python-sdk-en.readthedocs.io/en/latest/), [Turkish](https://epoint-python-sdk-tr.readthedocs.io/tr/latest/)
 - Source code: [github.com/qiyascc/epoint-python-sdk](https://github.com/qiyascc/epoint-python-sdk)
 - PyPI: [pypi.org/project/epoint-python-sdk](https://pypi.org/project/epoint-python-sdk/)
 - Project page: [theqiyas.cc/projects/epoint-python-sdk](https://theqiyas.cc/projects/epoint-python-sdk/)

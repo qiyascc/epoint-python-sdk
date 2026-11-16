@@ -57,7 +57,17 @@ addEventListener("message", (e) => {
 </script>
 ```
 
-The page needs `Permissions-Policy: payment=(self "https://epoint.az")`. The `postMessage` is a hint only: `WidgetMessage.from_event(data)` reads it, then confirm on the server with `ep.payments.status(widget.transaction)` or the signed callback. Epoint enables token payments per merchant. `ep.widgets.split(...)` is the split variant.
+The page needs `Permissions-Policy: payment=(self "https://epoint.az")`. The `postMessage` is a hint only: `WidgetMessage.from_event(data)` reads it, then confirm on the server with `ep.payments.status(widget.transaction)` or the signed callback. Epoint enables token payments per merchant: `ep.payments.methods().google_pay` tells you whether yours is on. `ep.widgets.split(...)` is the split variant.
+
+With your own Apple Pay / Google Pay buttons instead of the widget:
+
+```python
+session = ep.tokens.apple_session("https://shop.az")          # onvalidatemerchant
+record = ep.tokens.create("19.90", "ORDER-1043", description="Pro plan")
+charge = ep.tokens.google_pay(record.payment_id, token)      # or tokens.apple_pay(id, paymentData)
+if charge.redirect_url: redirect(charge.redirect_url)       # 3-D Secure
+ep.payments.status(order_id="ORDER-1043").paid               # always confirm
+```
 
 ## Safety
 
@@ -80,12 +90,13 @@ Reuse the same `order_id` when you retry. Epoint refuses a used one, so a double
 
 | Namespace | Methods |
 | --- | --- |
-| `payments` | `create` `form` `status` `reverse` `hold` `capture` |
+| `payments` | `create` `form` `status` `methods` `reverse` `hold` `capture` |
 | `cards` | `register` `register_and_pay` `charge` `status` `payout` |
 | `split` | `create` `charge` `register_and_pay` |
 | `installments` | `plans` `create` |
 | `wallets` | `list` `pay` |
 | `widgets` | `create` `split` (Apple Pay, Google Pay) |
+| `tokens` | `create` `apple_session` `apple_pay` `google_pay` (your own buttons) |
 | `invoices` | `create` `update` `get` `list` `send_sms` `send_email` |
 | `transfers` | `create` `status` (B2B) |
 | client | `heartbeat` `verify_callback` `request` |

@@ -26,6 +26,11 @@ Her API yolu ayrı bir ayar olarak tutulur, böylece Epoint tarafındaki bir de�
 | `wallet_payment` | `/api/1/wallet/payment` | `wallets.pay` |
 | `widget` | `/api/1/token/widget` | `widgets.create` |
 | `widget_split` | `/api/1/token/split-payment` | `widgets.split` |
+| `token_payment` | `/api/1/token/payment` | `tokens.create` |
+| `apple_session` | `/api/1/token/apple/session` | `tokens.apple_session` |
+| `apple_pay` | `/api/1/token/apple/pay` | `tokens.apple_pay` |
+| `google_pay` | `/api/1/token/google/pay` | `tokens.google_pay` |
+| `payment_methods` | `/api/1/payment-methods` | `payments.methods` |
 | `invoice_create` | `/api/1/invoices/create` | `invoices.create` |
 | `invoice_update` | `/api/1/invoices/update` | `invoices.update` |
 | `invoice_view` | `/api/1/invoices/view` | `invoices.get` |

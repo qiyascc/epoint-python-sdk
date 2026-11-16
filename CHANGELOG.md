@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+- `payments.methods()` reads `payment-methods`: which methods (card, Apple Pay, Google Pay, installments, wallets) are switched on, with `PaymentMethods.google_pay` / `.apple_pay` and the `PaymentMethod` enum
+- `payments.status(order_id=...)` asks by your own order id when the transaction is not known
+- Native Apple Pay / Google Pay buttons: `tokens.create` (`token/payment`), `tokens.apple_session` (`token/apple/session`), `tokens.apple_pay` and `tokens.google_pay` (`token/apple/pay`, `token/google/pay`); tokens are base64 encoded for you, charges are never resent after an ambiguous failure
+
 ## 0.2.0
 
 - Apple Pay and Google Pay: `widgets.create` returns `Widget.origin` for `postMessage` checks, `widgets.split` covers `token/split-payment`

@@ -105,3 +105,28 @@ from epoint_sdk import origin_of
 
 origin_of("https://epoint.az/widget/abc?x=1")   # "https://epoint.az"
 ```
+
+## Your own buttons instead of the widget
+
+When you draw the Apple Pay or Google Pay button yourself, the browser hands you the wallet token and the SDK sends it to Epoint.
+
+```python
+methods = ep.payments.methods()
+if not methods.google_pay:
+    ...  # not switched on for this merchant yet
+
+# Apple Pay, in onvalidatemerchant:
+session = ep.tokens.apple_session("https://shop.az")
+# return session.session to ApplePaySession.completeMerchantValidation
+
+# In onpaymentauthorized (Apple) or after loadPaymentData (Google):
+record = ep.tokens.create("19.90", "ORDER-1043", description="Pro plan")
+charge = ep.tokens.apple_pay(record.payment_id, payment_data)   # event.payment.token.paymentData
+charge = ep.tokens.google_pay(record.payment_id, token)          # tokenizationData.token, as a string
+
+if charge.redirect_url:
+    redirect(charge.redirect_url)   # 3-D Secure still needed
+tx = ep.payments.status(order_id="ORDER-1043")
+```
+
+The token is base64 encoded for you: a mapping is sent as its JSON, a string as it is. `billing_contact=` is optional. A charge moves money, so it is never resent after a timeout or a 5xx; confirm with `payments.status(order_id=...)` or the signed callback before marking the order paid. Apple Pay also needs your domain verified with Apple through Epoint.

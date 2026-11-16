@@ -105,3 +105,28 @@ from epoint_sdk import origin_of
 
 origin_of("https://epoint.az/widget/abc?x=1")   # "https://epoint.az"
 ```
+
+## Widget yerine kendi butonlarınız
+
+Apple Pay veya Google Pay butonunu kendiniz çizdiğinizde tarayıcı size cüzdan token'ını verir, SDK onu Epoint'e gönderir.
+
+```python
+methods = ep.payments.methods()
+if not methods.google_pay:
+    ...  # bu üye işyeri için henüz açılmamış
+
+# Apple Pay, onvalidatemerchant içinde:
+session = ep.tokens.apple_session("https://shop.az")
+# session.session'ı ApplePaySession.completeMerchantValidation'a verin
+
+# onpaymentauthorized (Apple) ya da loadPaymentData sonrası (Google):
+record = ep.tokens.create("19.90", "ORDER-1043", description="Pro plan")
+charge = ep.tokens.apple_pay(record.payment_id, payment_data)   # event.payment.token.paymentData
+charge = ep.tokens.google_pay(record.payment_id, token)          # tokenizationData.token, metin olarak
+
+if charge.redirect_url:
+    redirect(charge.redirect_url)   # 3-D Secure gerekiyor
+tx = ep.payments.status(order_id="ORDER-1043")
+```
+
+Token sizin için base64 ile kodlanır: mapping JSON olarak, metin olduğu gibi gönderilir. `billing_contact=` isteğe bağlıdır. Ödeme para hareket ettirdiği için zaman aşımı veya 5xx sonrası tekrar gönderilmez; siparişi ödendi saymadan önce `payments.status(order_id=...)` ya da imzalı callback ile doğrulayın. Apple Pay için alan adınızın Epoint üzerinden Apple'da doğrulanmış olması gerekir.

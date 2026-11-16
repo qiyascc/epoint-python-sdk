@@ -105,3 +105,28 @@ from epoint_sdk import origin_of
 
 origin_of("https://epoint.az/widget/abc?x=1")   # "https://epoint.az"
 ```
+
+## Widget əvəzinə öz düymələriniz
+
+Apple Pay və ya Google Pay düyməsini özünüz çəkəndə brauzer sizə cüzdan tokenini verir, SDK onu Epoint-ə göndərir.
+
+```python
+methods = ep.payments.methods()
+if not methods.google_pay:
+    ...  # bu merchant üçün hələ açılmayıb
+
+# Apple Pay, onvalidatemerchant içində:
+session = ep.tokens.apple_session("https://shop.az")
+# session.session-u ApplePaySession.completeMerchantValidation-a verin
+
+# onpaymentauthorized (Apple) və ya loadPaymentData-dan sonra (Google):
+record = ep.tokens.create("19.90", "ORDER-1043", description="Pro plan")
+charge = ep.tokens.apple_pay(record.payment_id, payment_data)   # event.payment.token.paymentData
+charge = ep.tokens.google_pay(record.payment_id, token)          # tokenizationData.token, mətn kimi
+
+if charge.redirect_url:
+    redirect(charge.redirect_url)   # 3-D Secure lazımdır
+tx = ep.payments.status(order_id="ORDER-1043")
+```
+
+Token sizin üçün base64 ilə kodlanır: mapping JSON kimi, mətn olduğu kimi göndərilir. `billing_contact=` istəyə bağlıdır. Ödəniş pul hərəkət etdirdiyi üçün timeout və ya 5xx-dən sonra təkrar göndərilmir; sifarişi ödənmiş saymazdan əvvəl `payments.status(order_id=...)` və ya imzalı callback ilə yoxlayın. Apple Pay üçün domeniniz Epoint vasitəsilə Apple-da təsdiqlənməlidir.

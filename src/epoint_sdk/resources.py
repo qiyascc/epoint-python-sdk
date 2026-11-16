@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import base64
+import json
 from datetime import date
 from typing import Any, Mapping, Optional, Union
 
@@ -8,12 +10,16 @@ from .enums import Currency, Language
 from .errors import InvalidRequestError
 from .messages import text
 from .models import (
+    ApplePaySession,
     Card,
     CardRegistration,
     InstallmentPlan,
     Invoice,
+    PaymentMethods,
     Redirect,
     Result,
+    TokenCharge,
+    TokenPayment,
     Transaction,
     Transfer,
     Wallet,
@@ -103,9 +109,20 @@ class Payments(_Resource):
         signed = self._client.sign(payload)
         return CheckoutForm(self._settings.url("checkout"), signed["data"], signed["signature"])
 
-    def status(self, transaction: str) -> Any:
-        payload = {"transaction": required(transaction, "transaction")}
+    def status(self, transaction: Optional[str] = None, *, order_id: Optional[str] = None) -> Any:
+        """By Epoint's transaction id, or by your own order id when the transaction is not known (widget, token)."""
+        if transaction is None and order_id is None:
+            raise InvalidRequestError(text("value.empty", field="transaction"))
+        payload = {
+            "transaction": required(transaction, "transaction") if transaction is not None else None,
+            "order_id": required(order_id, "order_id") if order_id is not None else None,
+        }
         return self._run(Op("status", payload, Transaction.from_api, safe=True, payment_state=True))
+
+    def methods(self, *, language: Optional[LanguageLike] = None) -> Any:
+        """Which methods (card, Apple Pay, Google Pay, installments...) are switched on for this merchant."""
+        payload = {"language": self._language(language)}
+        return self._run(Op("payment_methods", payload, PaymentMethods.from_api, safe=True))
 
     def reverse(self, transaction: str, amount_: Optional[Amount] = None, *, currency: Optional[CurrencyLike] = None,
                 language: Optional[LanguageLike] = None) -> Any:
@@ -372,3 +389,45 @@ class Transfers(_Resource):
         key = required(order_id, "order_id")
         return self._run(Op("b2b_status", None, Transfer.from_api, safe=True, method="GET", signed=False,
                             path_params={"order_id": key}))
+
+
+def _token(value: Any, name: str) -> str:
+    """Epoint takes the wallet token base64 encoded: a mapping is sent as its JSON, a string as it is."""
+    if isinstance(value, Mapping):
+        raw = json.dumps(value, separators=(",", ":"), ensure_ascii=False)
+    else:
+        raw = required(value, name, 100_000)
+    return base64.b64encode(raw.encode()).decode()
+
+
+def _payment_id(value: Any) -> Any:
+    text_id = required(value, "payment_id", 64)
+    return int(text_id) if text_id.isdigit() else text_id
+
+
+class Tokens(_Resource):
+    """Native Apple Pay / Google Pay buttons on your own page: create the payment, then charge the wallet token."""
+
+    def create(self, amount: Amount, order_id: str, *, description: Optional[str] = None,
+               language: Optional[LanguageLike] = None, currency: Optional[CurrencyLike] = None,
+               success_url: Optional[str] = None, error_url: Optional[str] = None, other_attr: Any = None) -> Any:
+        payload = self._checkout(amount, order_id, description, language, currency, success_url, error_url, other_attr)
+        return self._run(Op("token_payment", payload, TokenPayment.from_api, order_id=str(payload["order_id"])))
+
+    def apple_session(self, origin: str) -> Any:
+        """For `onvalidatemerchant`: the domain must be verified with Apple through Epoint first."""
+        payload = {"origin": required(origin, "origin")}
+        return self._run(Op("apple_session", payload, ApplePaySession.from_api, safe=True))
+
+    def apple_pay(self, payment_id: Any, payment_data: Any, *, billing_contact: Optional[Mapping[str, Any]] = None
+                  ) -> Any:
+        """`payment_data` is `event.payment.token.paymentData` from `onpaymentauthorized`."""
+        payload = {"id": _payment_id(payment_id), "token": _token(payment_data, "payment_data"),
+                   "billingContact": dict(billing_contact) if billing_contact else None}
+        return self._run(Op("apple_pay", payload, TokenCharge.from_api))
+
+    def google_pay(self, payment_id: Any, token: Any, *, billing_contact: Optional[Mapping[str, Any]] = None) -> Any:
+        """`token` is `paymentMethodData.tokenizationData.token` from Google Pay, as the string it arrives as."""
+        payload = {"id": _payment_id(payment_id), "token": _token(token, "token"),
+                   "billingContact": dict(billing_contact) if billing_contact else None}
+        return self._run(Op("google_pay", payload, TokenCharge.from_api))

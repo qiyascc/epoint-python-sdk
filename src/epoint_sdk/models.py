@@ -5,7 +5,7 @@ from decimal import Decimal
 from typing import Any, Mapping, Optional
 from urllib.parse import urlsplit
 
-from .enums import CardStatus, Status
+from .enums import CardStatus, PaymentMethod, Status
 from .money import parse
 
 
@@ -276,3 +276,99 @@ class CheckoutForm:
     @property
     def fields(self) -> dict[str, str]:
         return {"data": self.data, "signature": self.signature}
+
+
+def _mapping(value: Any) -> Mapping[str, Any]:
+    return value if isinstance(value, Mapping) else {}
+
+
+def _list(body: Mapping[str, Any], key: str) -> list[Any]:
+    value = body.get(key)
+    return value if isinstance(value, list) else []
+
+
+@dataclass(frozen=True)
+class PaymentMethods:
+    """The methods, wallets and installment banks switched on for the merchant."""
+
+    methods: tuple[str, ...]
+    business_id: Optional[str] = None
+    business_name: Optional[str] = None
+    wallets: tuple[Any, ...] = ()
+    installment_min_amount: Optional[Decimal] = None
+    installment_banks: tuple[Any, ...] = ()
+    raw: Mapping[str, Any] = field(default_factory=dict, repr=False, compare=False)
+
+    @classmethod
+    def from_api(cls, body: Mapping[str, Any]) -> PaymentMethods:
+        result = _mapping(body.get("result"))
+        business = _mapping(result.get("business"))
+        installment = _mapping(result.get("installment"))
+        methods, wallets, banks = _list(result, "methods"), _list(result, "wallets"), _list(installment, "banks")
+        return cls(tuple(str(m) for m in methods), _str(business, "id"), _str(business, "name"), tuple(wallets),
+                   parse(installment.get("min_amount")), tuple(banks), dict(body))
+
+    def has(self, method: object) -> bool:
+        return str(method) in self.methods
+
+    @property
+    def google_pay(self) -> bool:
+        return self.has(PaymentMethod.GOOGLE_PAY)
+
+    @property
+    def apple_pay(self) -> bool:
+        return self.has(PaymentMethod.APPLE_PAY)
+
+
+@dataclass(frozen=True)
+class TokenPayment:
+    """The payment record a native Apple Pay / Google Pay token is charged against."""
+
+    payment_id: Optional[str]
+    order_id: Optional[str] = None
+    amount: Optional[Decimal] = None
+    trace_id: Optional[str] = None
+    raw: Mapping[str, Any] = field(default_factory=dict, repr=False, compare=False)
+
+    @classmethod
+    def from_api(cls, body: Mapping[str, Any]) -> TokenPayment:
+        payment = _mapping(body.get("payment"))
+        return cls(_str(payment, "id"), _str(payment, "merchant_order_id"), parse(payment.get("total")),
+                   _str(body, "trace_id"), dict(body))
+
+
+@dataclass(frozen=True)
+class ApplePaySession:
+    """The merchant session for `ApplePaySession.completeMerchantValidation` in the browser."""
+
+    session: Mapping[str, Any]
+    trace_id: Optional[str] = None
+    raw: Mapping[str, Any] = field(default_factory=dict, repr=False, compare=False)
+
+    @classmethod
+    def from_api(cls, body: Mapping[str, Any]) -> ApplePaySession:
+        return cls(dict(_mapping(body.get("session"))), _str(body, "trace_id"), dict(body))
+
+
+@dataclass(frozen=True)
+class TokenCharge:
+    """The answer to charging an Apple Pay / Google Pay token. A `redirect_url` means 3-D Secure is still needed."""
+
+    status: Status
+    order_id: Optional[str] = None
+    payment_id: Optional[str] = None
+    redirect_url: Optional[str] = None
+    code: Optional[str] = None
+    message: Optional[str] = None
+    trace_id: Optional[str] = None
+    raw: Mapping[str, Any] = field(default_factory=dict, repr=False, compare=False)
+
+    @classmethod
+    def from_api(cls, body: Mapping[str, Any]) -> TokenCharge:
+        return cls(Status.of(body.get("status")), _str(body, "order_id"), _str(body, "payment_id"),
+                   _str(body, "redirect_url"), _str(body, "code"), _str(body, "message"), _str(body, "trace_id"),
+                   dict(body))
+
+    @property
+    def ok(self) -> bool:
+        return self.status is Status.SUCCESS

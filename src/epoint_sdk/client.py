@@ -5,7 +5,7 @@ from typing import Any, Mapping, Optional, Union
 from ._core import AsyncEngine, Op, SyncEngine
 from .callbacks import verify_callback
 from .models import Transaction
-from .resources import Cards, Installments, Invoices, Payments, Split, Transfers, Wallets, Widgets
+from .resources import Cards, Installments, Invoices, Payments, Split, Tokens, Transfers, Wallets, Widgets
 
 
 def _alive(body: Any) -> bool:
@@ -22,6 +22,7 @@ class _Namespaces:
         self.installments = Installments(self)
         self.wallets = Wallets(self)
         self.widgets = Widgets(self)
+        self.tokens = Tokens(self)
         self.invoices = Invoices(self)
         self.transfers = Transfers(self)
 

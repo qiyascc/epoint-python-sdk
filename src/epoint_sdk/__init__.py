@@ -3,7 +3,7 @@ from ._version import __version__
 from .callbacks import callback_form, verify_callback
 from .client import AsyncEpoint, Epoint
 from .config import Settings, load_settings
-from .enums import CardStatus, Currency, Language, OperationCode, Status
+from .enums import CardStatus, Currency, Language, OperationCode, PaymentMethod, Status
 from .errors import (
     ConfigurationError,
     EpointError,
@@ -16,14 +16,18 @@ from .errors import (
     TransportError,
 )
 from .models import (
+    ApplePaySession,
     Callback,
     Card,
     CardRegistration,
     CheckoutForm,
     InstallmentPlan,
     Invoice,
+    PaymentMethods,
     Redirect,
     Result,
+    TokenCharge,
+    TokenPayment,
     Transaction,
     Transfer,
     Wallet,
@@ -47,14 +51,19 @@ __all__ = [
     "Currency",
     "Language",
     "OperationCode",
+    "PaymentMethod",
+    "ApplePaySession",
     "Callback",
     "Card",
     "CardRegistration",
     "CheckoutForm",
     "InstallmentPlan",
     "Invoice",
+    "PaymentMethods",
     "Redirect",
     "Result",
+    "TokenCharge",
+    "TokenPayment",
     "Transaction",
     "Transfer",
     "Wallet",

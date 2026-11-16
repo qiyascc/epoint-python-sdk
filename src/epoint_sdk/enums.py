@@ -25,6 +25,22 @@ class Status(_Str):
             return cls.UNKNOWN
 
 
+class PaymentMethod(_Str):
+    """What `payments.methods()` lists as switched on for the merchant."""
+
+    CARD = "card"
+    INSTALLMENT = "installment"
+    WALLET = "wallet"
+    GOOGLE_PAY = "google_pay"
+    APPLE_PAY = "apple_pay"
+    CLICK_TO_PAY = "click_to_pay"
+    AMEX = "amex"
+    PRE_AUTH = "pre_auth"
+    CARD_SAVE = "card_save"
+    PAYOUT = "payout"
+    REVERSE = "reverse"
+
+
 class CardStatus(_Str):
     NEW = "new"
     ACTIVE = "active"

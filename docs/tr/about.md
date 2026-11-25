@@ -1,8 +1,8 @@
 # Hakkında
 
-Epoint Python SDK'yı **Qiyas Sadıqov** yazdı ve geliştiriyor. Diğer projeleri [theqiyas.cc](https://theqiyas.cc) adresinde.
+Epoint Python SDK'yı **Qiyas Sadıqov** yazdı ve geliştiriyor. Diğer projeleri [qiyas.cc](https://qiyas.cc) adresinde.
 
-- Proje sayfası: [theqiyas.cc/projects/epoint-python-sdk](https://theqiyas.cc/projects/epoint-python-sdk/)
+- Proje sayfası: [qiyas.cc/projects/epoint-python-sdk](https://qiyas.cc/projects/epoint-python-sdk/)
 - Kaynak kod: [github.com/qiyascc/epoint-python-sdk](https://github.com/qiyascc/epoint-python-sdk)
 - PyPI: [pypi.org/project/epoint-python-sdk](https://pypi.org/project/epoint-python-sdk/)
 - Hata bildirimleri: [github.com/qiyascc/epoint-python-sdk/issues](https://github.com/qiyascc/epoint-python-sdk/issues)

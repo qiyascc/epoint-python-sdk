@@ -15,8 +15,8 @@ from epoint_sdk import __version__
 PACKAGE = "epoint_sdk"
 DIST = "epoint-python-sdk"
 REPO = "https://github.com/qiyascc/epoint-python-sdk"
-SITE = "https://theqiyas.cc"
-PROJECT_PAGE = "https://theqiyas.cc/projects/epoint-python-sdk/"
+SITE = "https://qiyas.cc"
+PROJECT_PAGE = "https://qiyas.cc/projects/epoint-python-sdk/"
 
 LANGS = [
     ("az", "AZ", "https://epoint-python-sdk.readthedocs.io/az/latest/"),
@@ -113,7 +113,7 @@ def configure(ns, language):
             "footer_icons": [
                 {"name": "GitHub", "url": REPO, "html": GITHUB, "class": ""},
                 {"name": "PyPI", "url": f"https://pypi.org/project/{DIST}/", "html": PYPI, "class": ""},
-                {"name": "theqiyas.cc", "url": SITE, "html": GLOBE, "class": ""},
+                {"name": "qiyas.cc", "url": SITE, "html": GLOBE, "class": ""},
             ],
         },
     )

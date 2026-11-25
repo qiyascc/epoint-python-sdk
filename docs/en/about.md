@@ -1,8 +1,8 @@
 # About
 
-The Epoint Python SDK is written and maintained by **Qiyas Sadıqov**. More of his projects are at [theqiyas.cc](https://theqiyas.cc).
+The Epoint Python SDK is written and maintained by **Qiyas Sadıqov**. More of his projects are at [qiyas.cc](https://qiyas.cc).
 
-- Project page: [theqiyas.cc/projects/epoint-python-sdk](https://theqiyas.cc/projects/epoint-python-sdk/)
+- Project page: [qiyas.cc/projects/epoint-python-sdk](https://qiyas.cc/projects/epoint-python-sdk/)
 - Source code: [github.com/qiyascc/epoint-python-sdk](https://github.com/qiyascc/epoint-python-sdk)
 - PyPI: [pypi.org/project/epoint-python-sdk](https://pypi.org/project/epoint-python-sdk/)
 - Issues: [github.com/qiyascc/epoint-python-sdk/issues](https://github.com/qiyascc/epoint-python-sdk/issues)

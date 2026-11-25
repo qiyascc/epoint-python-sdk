@@ -118,8 +118,8 @@ pip install -e ".[dev]" && pytest && ruff check . && mypy src
 - Documentation: [Azerbaijani](https://epoint-python-sdk.readthedocs.io/az/latest/), [English](https://epoint-python-sdk-en.readthedocs.io/en/latest/), [Turkish](https://epoint-python-sdk-tr.readthedocs.io/tr/latest/)
 - Source code: [github.com/qiyascc/epoint-python-sdk](https://github.com/qiyascc/epoint-python-sdk)
 - PyPI: [pypi.org/project/epoint-python-sdk](https://pypi.org/project/epoint-python-sdk/)
-- Project page: [theqiyas.cc/projects/epoint-python-sdk](https://theqiyas.cc/projects/epoint-python-sdk/)
-- Author: [Qiyas Sadıqov](https://theqiyas.cc), more projects at [theqiyas.cc](https://theqiyas.cc)
+- Project page: [qiyas.cc/projects/epoint-python-sdk](https://qiyas.cc/projects/epoint-python-sdk/)
+- Author: [Qiyas Sadıqov](https://qiyas.cc), more projects at [qiyas.cc](https://qiyas.cc)
 
 ## License
 

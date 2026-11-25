@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+- Project and author links point to qiyas.cc, the new address of the site. No code changes.
+
 ## 0.3.0
 
 - `payments.methods()` reads `payment-methods`: which methods (card, Apple Pay, Google Pay, installments, wallets) are switched on, with `PaymentMethods.google_pay` / `.apple_pay` and the `PaymentMethod` enum
